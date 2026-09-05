@@ -142,7 +142,10 @@ export const Goals = () => {
             </ConfirmationModal>
 
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-white">{t('financial_goals')}</h2>
+                <div>
+                    <h2 className="text-xl font-bold text-white">{t('financial_goals')}</h2>
+                    <p className="text-xs text-gray-400 mt-0.5">{t('virtual_goal_notice')}</p>
+                </div>
                 <Button onClick={() => setIsModalOpen(true)} className="!w-auto px-6 py-2">{t('add_goal')}</Button>
             </div>
             {goals.length > 0 ? (

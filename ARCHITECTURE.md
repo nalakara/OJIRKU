@@ -202,11 +202,11 @@ debtPayments: '++id, debtId, date'
 ## AI Integration
 
 - **Lokasi Kode:** `services/geminiService.ts`
-- **Konfigurasi Kunci API:** Mengambil dari `process.env.API_KEY`.
+- **Konfigurasi Kunci API:** Menggunakan model BYOK (Bring Your Own Key) yang disimpan di `localStorage` peramban pengguna dan dikonfigurasi melalui menu Pengaturan. Tidak ada kunci API pengembang yang dibundel dalam aset produksi.
 - **System Instruction:**
   > *"You are 'OJIRKU AI', a helpful and friendly financial assistant for a personal budgeting app. Your tone should be encouraging, clear, and easy to understand for someone who is not a financial expert. Provide insights in concise bullet points or short paragraphs. Start with a warm greeting. Analyze the provided data and give actionable advice..."*
 - **Temperature:** `0.5` (menjaga konsistensi dan meminimalkan halusinasi angka).
-- **Penanganan Error:** Menangkap kondisi ketika kunci API tidak terpasang atau saat perangkat offline, menghasilkan pesan ramah tanpa membuat aplikasi crash.
+- **Penanganan Error:** Menangkap kondisi ketika kunci API belum diatur atau saat perangkat offline, menghasilkan pesan ramah tanpa membuat aplikasi crash.
 
 ---
 
@@ -217,6 +217,7 @@ debtPayments: '++id, debtId, date'
 - `recharts` (v3.1.0): Pembuatan diagram batang dan diagram lingkaran responsif.
 - `@google/genai` (v1.11.0): SDK resmi Google Gemini.
 - `vite` (v6.2.0): Server pengembangan dan bundler produksi.
+- `vitest` & `fake-indexeddb`: Automated unit & regression test suite.
 
 ---
 
@@ -231,12 +232,12 @@ debtPayments: '++id, debtId, date'
 
 ## Security Considerations
 
-1. **PIN Keamanan Tidak Dienkripsi (*Plaintext PIN*):**
-   - PIN pengguna disimpan sebagai teks biasa pada tabel `settings` (`key: 'pin'`). Siapa pun yang memiliki akses ke Developer Tools (Application tab -> IndexedDB) dapat membaca nilai PIN ini.
-2. **Ketiadaan Enkripsi Database di Klien:**
-   - Data riwayat keuangan tersimpan tanpa enkripsi tingkat berkas (*at-rest encryption*). Keamanan bergantung sepenuhnya pada proteksi sandi/kunci layar perangkat keras pengguna.
-3. **Penyimpanan Kunci API di Klien:**
-   - Pada `services/geminiService.ts`, pemanggilan Gemini dilakukan langsung dari kode browser klien menggunakan `process.env.API_KEY`. Dalam arsitektur web produksi, kunci API idealnya diproteksi di balik proxy backend server.
+1. **Proteksi PIN Lokal (Salted SHA-256):**
+   - PIN pengguna disimpan dengan salt 16-byte acak dan hash SHA-256 menggunakan Web Crypto API pada tabel `settings` (`key: 'pin'`). Terdapat mekanisme migrasi otomatis untuk pengguna lama yang masih menyimpan format plaintext.
+2. **Model Kredensial BYOK (Bring Your Own Key):**
+   - Kunci API Gemini dimiliki dan dimasukkan langsung oleh pengguna akhir, tersimpan di `localStorage` peramban. Tidak ada kredensial pengembang yang diekspos dalam bundel JavaScript klien.
+3. **Penyimpanan Database Lokal (*Local-First*):**
+   - Data riwayat keuangan tersimpan di IndexedDB browser perangkat. Keamanan data pada gawai bersama bergantung pada proteksi PIN aplikasi dan penguncian layar perangkat fisik.
 
 ---
 

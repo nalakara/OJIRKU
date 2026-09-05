@@ -3,7 +3,7 @@ import { Page } from './Layout';
 import { Card, Button, Spinner } from './common';
 import { useI18n } from '../lib/i18n';
 import { db } from '../lib/db';
-import { getFinancialAdvice } from '../services/geminiService';
+import { getFinancialAdvice, hasStoredApiKey } from '../services/geminiService';
 import { FinancialDataSummary } from '../types';
 
 const Markdown = ({ content }: { content: string }) => {
@@ -72,6 +72,11 @@ export const AISuggestions = () => {
     const [error, setError] = useState('');
 
     const handleAnalysis = useCallback(async () => {
+        if (!hasStoredApiKey()) {
+            setError(t('ai_key_required_notice'));
+            return;
+        }
+
         setIsLoading(true);
         setError('');
         setReport('');
@@ -95,7 +100,13 @@ export const AISuggestions = () => {
             }
 
             const advice = await getFinancialAdvice(summary);
-            setReport(advice);
+            if (advice === 'ERROR_NO_API_KEY') {
+                setError(t('ai_key_required_notice'));
+            } else if (advice === 'ERROR_GENERATION_FAILED') {
+                setError(t('error_generating_report'));
+            } else {
+                setReport(advice);
+            }
         } catch (err) {
             setError(t('error_generating_report'));
             console.error(err);
@@ -104,14 +115,28 @@ export const AISuggestions = () => {
         }
     }, [t]);
 
+    const isKeyConfigured = hasStoredApiKey();
+
     return (
         <Page>
             <Card>
                 <h2 className="text-xl font-bold mb-2 text-white">{t('ai_financial_review')}</h2>
                 <p className="text-gray-300 mb-4">
-                    Get personalized insights and suggestions based on your recent financial activity. This feature requires an internet connection.
+                    Get personalized insights and suggestions based on your recent financial activity. This feature requires an internet connection and your personal Gemini API key.
                 </p>
-                <Button onClick={handleAnalysis} disabled={isLoading}>
+
+                {!isKeyConfigured ? (
+                    <div className="p-4 bg-white/5 border border-yellow-500/30 rounded-2xl mb-4">
+                        <p className="text-yellow-300 text-sm font-medium mb-1">
+                            {t('ai_key_required_notice')}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                            {t('get_api_key_help')}
+                        </p>
+                    </div>
+                ) : null}
+
+                <Button onClick={handleAnalysis} disabled={isLoading || !isKeyConfigured}>
                     {isLoading ? t('generating_insights') : t('analyze_finances')}
                 </Button>
             </Card>

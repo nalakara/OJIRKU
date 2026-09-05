@@ -49,8 +49,8 @@ db.version(2).stores({
 const onPopulate = async () => {
     // Populate with default data on first-time setup
     
-    // Check language from localStorage. This is a pragmatic choice for a better UX.
-    const lang = localStorage.getItem('ojirku_language') || 'id';
+    // Check language from localStorage safely.
+    const lang = typeof localStorage !== 'undefined' ? (localStorage.getItem('ojirku_language') || 'id') : 'id';
 
     const defaultCategoriesData = {
         en: {

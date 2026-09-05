@@ -2,12 +2,44 @@
 import { GoogleGenAI } from "@google/genai";
 import { FinancialDataSummary, TransactionType } from "../types";
 
-const getApiKey = () => {
-    const key = process.env.API_KEY;
-    if (!key) {
-        throw new Error("API_KEY environment variable not set.");
-    }
-    return key;
+const STORAGE_KEY = 'ojirku_gemini_api_key';
+
+export const getStoredApiKey = (): string | null => {
+  try {
+    const key = localStorage.getItem(STORAGE_KEY);
+    return key && key.trim().length > 0 ? key.trim() : null;
+  } catch {
+    return null;
+  }
+};
+
+export const setStoredApiKey = (key: string): void => {
+  if (key && key.trim().length > 0) {
+    localStorage.setItem(STORAGE_KEY, key.trim());
+  }
+};
+
+export const removeStoredApiKey = (): void => {
+  localStorage.removeItem(STORAGE_KEY);
+};
+
+export const hasStoredApiKey = (): boolean => {
+  return !!getStoredApiKey();
+};
+
+export const getMaskedApiKey = (): string | null => {
+  const key = getStoredApiKey();
+  if (!key) return null;
+  if (key.length <= 8) return '••••••••';
+  return `${key.substring(0, 6)}••••••••${key.substring(key.length - 4)}`;
+};
+
+const getApiKey = (): string => {
+  const key = getStoredApiKey();
+  if (!key) {
+    throw new Error("BYOK_API_KEY_NOT_CONFIGURED");
+  }
+  return key;
 };
 
 // This function calls the Gemini API to get financial advice.
@@ -54,10 +86,10 @@ export const getFinancialAdvice = async (summary: FinancialDataSummary): Promise
     return response.text;
 
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    if (error instanceof Error && error.message.includes("API_KEY")) {
-         return "Error: API key is not configured. This feature is currently unavailable.";
+    console.error("Gemini API Error:", error instanceof Error ? error.message : "Unknown error");
+    if (error instanceof Error && (error.message.includes("API_KEY") || error.message.includes("BYOK_API_KEY_NOT_CONFIGURED"))) {
+         return "ERROR_NO_API_KEY";
     }
-    return "Sorry, I couldn't generate a report right now. Please check your internet connection and try again.";
+    return "ERROR_GENERATION_FAILED";
   }
 };

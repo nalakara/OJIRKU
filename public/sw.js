@@ -1,18 +1,13 @@
 // A service worker using a stale-while-revalidate strategy.
-const CACHE_NAME = 'ojirku-cache-v9';
+const CACHE_NAME = 'ojirku-cache-v10';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/index.tsx',
   '/manifest.json',
   '/icon.svg',
   '/icon_maskable.svg',
   'https://cdn.tailwindcss.com',
-  'https://esm.sh/react@^19.1.1',
-  'https://esm.sh/react-dom@^19.1.1/client',
-  'https://esm.sh/recharts@^3.1.0',
-  'https://esm.sh/@google/genai@^1.11.0',
-  'https://esm.sh/dexie@^4.0.11'
+  'https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap'
 ];
 
 self.addEventListener('install', event => {

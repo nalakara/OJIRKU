@@ -100,10 +100,10 @@ Aplikasi ini menggunakan model **arsitektur client-side murni**:
 ## Known Limitations
 
 1. **Penyimpanan Hanya di Perangkat Tersebut:** Jika pengguna membersihkan cache/data browser atau berpindah perangkat, data akan hilang kecuali sudah diekspor via CSV.
-2. **Proteksi PIN Bersifat Client-Side:** PIN disimpan dalam format teks biasa (*plaintext*) di IndexedDB. PIN ini hanya berfungsi sebagai penghalang visual di layar, bukan enkripsi kriptografi file database.
-3. **Ketergantungan Kunci API Gemini:** Pada versi web saat ini, kunci API Gemini dibaca dari environment `process.env.API_KEY` saat runtime klien. Fitur saran AI tidak dapat bekerja jika kunci belum dikonfigurasi.
+2. **Proteksi PIN Lokal (Salted SHA-256):** PIN disimpan dengan salt 16-byte dan hash SHA-256 di IndexedDB untuk mencegah pengintipan langsung. PIN ini berfungsi sebagai gerbang akses lokal, namun tidak mengenkripsi file IndexedDB secara menyeluruh (*at-rest*).
+3. **Model BYOK (Bring Your Own Key) Gemini:** Fitur ulasan AI menggunakan model BYOK di mana pengguna memasukkan kunci API Gemini pribadi di menu Pengaturan yang disimpan secara eksklusif di `localStorage` peramban. Tanpa kunci, seluruh fungsi pencatatan keuangan tetap berjalan 100% offline.
 4. **Transfer Antar Rekening Belum Otomatis:** Belum ada tipe transaksi `TRANSFER` untuk memindahkan saldo dari Bank ke Kas secara langsung tanpa membuat dua catatan (pengeluaran dan pemasukan) manual.
-5. **Target Tabungan (Goals) Terpisah dari Saldo Rekening:** Menambah nominal pada tabungan impian saat ini hanya menambah angka progres visual dan belum memotong saldo fisik rekening bank/kas.
+5. **Target Tabungan (Goals) Merupakan Target Virtual:** Fitur *Goals* dirancang sebagai pelacak target visual (*Virtual Savings Target*) dan secara sengaja tidak memotong saldo fisik rekening.
 
 ---
 
