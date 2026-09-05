@@ -39,8 +39,8 @@ export const Reports = () => {
 
     return (
         <Page>
-            <Card>
-                <h2 className="text-xl font-bold mb-4 text-white">Expense Breakdown</h2>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-4 text-white">Expense Breakdown</h2>
                 {loading ? <Spinner /> : 
                 (expenseData.length > 0 ? (
                     <div style={{ width: '100%', height: 300 }}>
@@ -55,7 +55,7 @@ export const Reports = () => {
                                     fill="#8884d8"
                                     dataKey="value"
                                     nameKey="name"
-                                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                                    label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                                 >
                                     {expenseData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -64,20 +64,23 @@ export const Reports = () => {
                                 <Tooltip 
                                     formatter={(value: number) => formatCurrency(value)}
                                     contentStyle={{
-                                        background: 'rgba(30,30,30,0.8)',
+                                        background: 'rgba(29, 23, 46, 0.95)',
                                         border: '1px solid rgba(255,255,255,0.2)',
-                                        borderRadius: '1rem',
+                                        borderRadius: '8px',
+                                        color: '#ffffff',
+                                        fontSize: '14px',
+                                        backdropFilter: 'blur(8px)'
                                     }}
-                                    labelStyle={{ color: '#fff' }}
+                                    labelStyle={{ color: '#ffffff', fontWeight: 600 }}
                                 />
-                                <Legend />
+                                <Legend wrapperStyle={{ color: '#ffffff', fontSize: '14px' }} />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
                 ) : (
                     <div className="text-center py-8">
-                        <h3 className="text-lg font-semibold text-white">No Expense Data</h3>
-                        <p className="text-gray-400 mt-2">Add some expense transactions to see a breakdown here.</p>
+                        <h2 className="text-[20px] font-bold text-white">No Expense Data</h2>
+                        <p className="text-gray-300 text-[14px] mt-2">Add some expense transactions to see a breakdown here.</p>
                     </div>
                 ))}
             </Card>

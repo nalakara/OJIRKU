@@ -76,30 +76,30 @@ export const PinLockScreen = ({ onBack }: { onBack?: () => void }) => {
   const displayFilled = isSettingPin && pin.length === 4 ? confirmPin.length : pin.length;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col justify-center items-center p-4">
+    <div className="fixed inset-0 z-50 flex flex-col justify-center items-center p-4 bg-[#1D172E]/90 backdrop-blur-lg">
        {onBack && (
-        <button onClick={onBack} className="absolute top-6 left-6 text-teal-400 font-semibold flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-            {t('back')}
+        <button onClick={onBack} className="absolute top-6 left-6 text-teal-300 hover:text-white font-semibold flex items-center gap-2 p-2 rounded-[8px] hover:bg-white/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            <span className="text-[14px]">{t('back')}</span>
         </button>
       )}
       <div className="w-full max-w-xs mx-auto text-center">
-        <h1 className="text-3xl font-bold text-white">{title}</h1>
-        {subtitle && <p className="text-gray-300 mt-1">{subtitle}</p>}
-        <div className="my-10">
+        <h1 className="text-[20px] font-bold text-white">{title}</h1>
+        {subtitle && <p className="text-[14px] text-gray-300 mt-1">{subtitle}</p>}
+        <div className="my-8">
           <PinDisplay length={4} filled={displayFilled} />
         </div>
-        {error && <p className="text-red-400 mb-4">{error}</p>}
-        <div className="grid grid-cols-3 gap-4">
+        {error && <p className="text-red-400 text-[12px] mb-4">{error}</p>}
+        <div className="grid grid-cols-3 gap-3">
           {'123456789'.split('').map(key => (
-            <Button key={key} onClick={() => handleKeyPress(key)} variant="secondary" className="text-2xl h-20 !rounded-3xl">{key}</Button>
+            <Button key={key} onClick={() => handleKeyPress(key)} variant="secondary" className="text-[20px] font-bold h-14 !rounded-[8px] !p-0 bg-white/10 hover:bg-white/20">{key}</Button>
           ))}
           <div/>
-          <Button onClick={() => handleKeyPress('0')} variant="secondary" className="text-2xl h-20 !rounded-3xl">0</Button>
-          <Button onClick={() => handleKeyPress('del')} variant="secondary" className="text-2xl h-20 !rounded-3xl">⌫</Button>
+          <Button onClick={() => handleKeyPress('0')} variant="secondary" className="text-[20px] font-bold h-14 !rounded-[8px] !p-0 bg-white/10 hover:bg-white/20">0</Button>
+          <Button onClick={() => handleKeyPress('del')} variant="secondary" className="text-[20px] font-bold h-14 !rounded-[8px] !p-0 bg-white/10 hover:bg-white/20">⌫</Button>
         </div>
-        <div className="mt-8">
-            <Button onClick={handleSubmit} disabled={(isSettingPin ? (pin.length !== 4 || confirmPin.length !== 4) : pin.length !== 4)}>
+        <div className="mt-6">
+            <Button onClick={handleSubmit} variant="primary" disabled={(isSettingPin ? (pin.length !== 4 || confirmPin.length !== 4) : pin.length !== 4)}>
                 {isSettingPin ? t('save') : t('sign_in')}
             </Button>
         </div>

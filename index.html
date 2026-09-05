@@ -14,7 +14,7 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       :root {
         --background-start-rgb: #38345E;
@@ -22,22 +22,47 @@
         --accent-orange: #F97316;
         --accent-yellow: #FACC15;
         --accent-teal: #14B8A6;
-        --font-sans: 'Manrope', sans-serif;
+        --accent-pink: #F472B6;
+        --color-text-primary: #f3f4f6;
+        --color-text-muted: #9ca3af;
+        --color-text-highlight: #ffffff;
+        --font-primary: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+        --font-secondary: ui-sans-serif, system-ui, -apple-system, sans-serif;
       }
       body {
         background-color: var(--background-end-rgb);
         background-image: linear-gradient(160deg, var(--background-start-rgb) 0%, var(--background-end-rgb) 100%);
-        font-family: var(--font-sans);
-        color: #e5e7eb; /* Default text-gray-200 */
+        background-attachment: fixed;
+        font-family: var(--font-primary);
+        font-size: 14px;
+        color: var(--color-text-primary);
+        min-height: 100vh;
+      }
+      h1 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--color-text-highlight);
+      }
+      h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--color-text-highlight);
       }
       .prose {
-        color: inherit;
+        color: var(--color-text-primary);
       }
-      .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-        color: inherit;
+      .prose h1 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--color-text-highlight);
+      }
+      .prose h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--color-text-highlight);
       }
       .prose strong {
-        color: inherit;
+        color: var(--color-text-highlight);
       }
       .prose a {
         color: var(--accent-teal);

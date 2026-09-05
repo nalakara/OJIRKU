@@ -15,25 +15,25 @@ const TransactionItem = ({ tx, categories, accounts, onEdit, onDelete, percentag
     const isIncome = tx.type === TransactionType.INCOME;
 
     return (
-        <li className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl gap-2">
-            <div className="flex items-center gap-4 flex-grow min-w-0">
+        <li className="flex items-center justify-between p-3.5 bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px] gap-2">
+            <div className="flex items-center gap-3 flex-grow min-w-0">
                 <div className="flex-shrink-0">
                     <RadialProgress percentage={percentage} color={color} />
                 </div>
                 <div className="flex-grow min-w-0">
-                    <p className="font-bold text-white truncate">{tx.description}</p>
-                    <p className="text-sm text-gray-400 truncate">
+                    <p className="font-bold text-white text-[14px] truncate">{tx.description}</p>
+                    <p className="text-[12px] text-gray-300 truncate">
                         {category?.name || '...'} &bull; {account?.name || '...'}
                     </p>
-                    <p className="text-xs text-gray-500">{new Date(tx.date).toLocaleDateString()}</p>
+                    <p className="text-[11px] text-gray-400">{new Date(tx.date).toLocaleDateString()}</p>
                 </div>
             </div>
-            <div className="flex items-center space-x-2 flex-shrink-0">
-                <p className={`font-bold text-lg text-right ${isIncome ? 'text-teal-400' : 'text-pink-400'}`}>
+            <div className="flex items-center space-x-1 flex-shrink-0">
+                <p className={`font-bold text-[14px] text-right ${isIncome ? 'text-teal-300' : 'text-pink-300'}`}>
                     {isIncome ? '+' : '-'} {formatCurrency(tx.amount)}
                 </p>
-                <button onClick={onEdit} className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_edit_transaction') + tx.description}><EditIcon className="w-5 h-5"/></button>
-                <button onClick={onDelete} className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_transaction') + tx.description}><TrashIcon className="w-5 h-5"/></button>
+                <button onClick={onEdit} className="p-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_edit_transaction') + tx.description}><EditIcon className="w-4 h-4"/></button>
+                <button onClick={onDelete} className="p-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_transaction') + tx.description}><TrashIcon className="w-4 h-4"/></button>
             </div>
         </li>
     );
@@ -123,39 +123,51 @@ const AddTransactionModal = ({ isOpen, onClose, onSave, transactionToEdit }: { i
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{isEditing ? t('edit_transaction') : t('add_transaction')}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{isEditing ? t('edit_transaction') : t('add_transaction')}</h2>
             <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                    <button onClick={() => setType(TransactionType.EXPENSE)} className={`w-full text-center font-bold py-3 px-4 rounded-full transition-all duration-300 ${type === TransactionType.EXPENSE ? 'bg-pink-500 text-white' : 'bg-white/10 text-gray-200'}`}>{t('expense')}</button>
-                    <button onClick={() => setType(TransactionType.INCOME)} className={`w-full text-center font-bold py-3 px-4 rounded-full transition-all duration-300 ${type === TransactionType.INCOME ? 'bg-teal-500 text-white' : 'bg-white/10 text-gray-200'}`}>{t('income')}</button>
+                <div className="grid grid-cols-2 gap-3">
+                    <button 
+                        type="button"
+                        onClick={() => setType(TransactionType.EXPENSE)} 
+                        className={`w-full text-center font-bold text-[14px] py-2.5 px-3 rounded-[8px] transition-all duration-200 ${type === TransactionType.EXPENSE ? 'bg-pink-500 text-white shadow-md' : 'bg-white/10 text-gray-200 hover:bg-white/20'}`}
+                    >
+                        {t('expense')}
+                    </button>
+                    <button 
+                        type="button"
+                        onClick={() => setType(TransactionType.INCOME)} 
+                        className={`w-full text-center font-bold text-[14px] py-2.5 px-3 rounded-[8px] transition-all duration-200 ${type === TransactionType.INCOME ? 'bg-teal-500 text-white shadow-md' : 'bg-white/10 text-gray-200 hover:bg-white/20'}`}
+                    >
+                        {t('income')}
+                    </button>
                 </div>
                 <div>
                     <Input type="number" placeholder={t('amount')} value={amount} onChange={e => setAmount(e.target.value)} />
-                    {errors.amount && <p className="text-red-400 text-sm mt-1 px-4">{errors.amount}</p>}
+                    {errors.amount && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.amount}</p>}
                 </div>
                 <div>
                     <Input placeholder={t('description')} value={description} onChange={e => setDescription(e.target.value)} />
-                    {errors.description && <p className="text-red-400 text-sm mt-1 px-4">{errors.description}</p>}
+                    {errors.description && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.description}</p>}
                 </div>
                 <div>
                     <Select value={categoryId} onChange={e => setCategoryId(e.target.value)}>
                         <option value="">{t('category')}</option>
-                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                        {categories.map(c => <option key={c.id} value={c.id} className="bg-slate-900 text-white">{c.name}</option>)}
                     </Select>
-                    {errors.categoryId && <p className="text-red-400 text-sm mt-1 px-4">{errors.categoryId}</p>}
+                    {errors.categoryId && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.categoryId}</p>}
                 </div>
                 <div>
                     <Select value={accountId} onChange={e => setAccountId(e.target.value)}>
                         <option value="">{t('account')}</option>
-                        {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+                        {accounts.map(a => <option key={a.id} value={a.id} className="bg-slate-900 text-white">{a.name}</option>)}
                     </Select>
-                    {errors.accountId && <p className="text-red-400 text-sm mt-1 px-4">{errors.accountId}</p>}
+                    {errors.accountId && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.accountId}</p>}
                 </div>
                  <div>
                     <Input type="date" value={date} onChange={e => setDate(e.target.value)} />
-                    {errors.date && <p className="text-red-400 text-sm mt-1 px-4">{errors.date}</p>}
+                    {errors.date && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.date}</p>}
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
                     <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
@@ -233,13 +245,13 @@ export const Transactions = () => {
 
     return (
         <Page>
-            <div className="fixed bottom-28 right-6 z-20">
+            <div className="fixed bottom-24 right-6 z-20">
                 <button 
                     onClick={handleOpenAddModal} 
-                    className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white w-16 h-16 rounded-2xl shadow-lg shadow-orange-500/30 flex items-center justify-center transition-transform hover:scale-110 active:scale-95" 
+                    className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white w-14 h-14 rounded-[8px] shadow-lg shadow-orange-500/30 flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer" 
                     aria-label={t('add_transaction')}
                 >
-                    <PlusIcon className="w-8 h-8" />
+                    <PlusIcon className="w-7 h-7" />
                 </button>
             </div>
             
@@ -260,7 +272,7 @@ export const Transactions = () => {
             />
             
             {transactions.length > 0 ? (
-                <ul className="space-y-4">
+                <ul className="space-y-3">
                     {transactions.map(tx => (
                         tx.id ? <TransactionItem 
                             key={tx.id} 
@@ -277,8 +289,8 @@ export const Transactions = () => {
             ) : (
                 <Card>
                     <div className="text-center py-8">
-                        <h3 className="text-xl font-semibold text-white">No Transactions Yet</h3>
-                        <p className="text-gray-400 mt-2">Tap the orange '+' button to add your first income or expense.</p>
+                        <h2 className="text-[20px] font-bold text-white">No Transactions Yet</h2>
+                        <p className="text-gray-300 text-[14px] mt-2">Tap the orange '+' button to add your first income or expense.</p>
                     </div>
                 </Card>
             )}

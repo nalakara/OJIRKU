@@ -13,21 +13,21 @@ const BudgetItem = ({ budget, category, usage, onDelete }: { budget: Budget, cat
     const isOverBudget = usage > budget.amount;
 
     return (
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
             <div className="flex justify-between items-start mb-2">
                  <div>
-                    <span className="font-bold text-white">{category?.name || '...'}</span>
-                    <p className={`font-semibold text-sm ${isOverBudget ? 'text-red-400' : 'text-gray-400'}`}>{formatCurrency(usage)} / {formatCurrency(budget.amount)}</p>
+                    <span className="font-bold text-[14px] text-white">{category?.name || '...'}</span>
+                    <p className={`font-semibold text-[12px] ${isOverBudget ? 'text-red-400' : 'text-gray-300'}`}>{formatCurrency(usage)} / {formatCurrency(budget.amount)}</p>
                 </div>
-                <button onClick={onDelete} className="p-2 -mt-2 -mr-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_budget') + (category?.name || '')}><TrashIcon className="w-5 h-5"/></button>
+                <button onClick={onDelete} className="p-2 -mt-2 -mr-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_budget') + (category?.name || '')}><TrashIcon className="w-4 h-4"/></button>
             </div>
-            <div className="w-full bg-black/30 rounded-full h-2.5">
+            <div className="w-full bg-black/30 rounded-[4px] h-2.5">
                 <div 
-                    className={`h-2.5 rounded-full ${isOverBudget ? 'bg-red-500' : 'bg-gradient-to-r from-teal-400 to-cyan-500'}`} 
+                    className={`h-2.5 rounded-[4px] ${isOverBudget ? 'bg-red-500' : 'bg-gradient-to-r from-teal-400 to-cyan-500'}`} 
                     style={{ width: `${percentage}%` }}
                 ></div>
             </div>
-            {isOverBudget && <p className="text-red-400 text-sm mt-2">Over budget by {formatCurrency(usage - budget.amount)}</p>}
+            {isOverBudget && <p className="text-red-400 text-[12px] mt-2">Over budget by {formatCurrency(usage - budget.amount)}</p>}
         </Card>
     );
 };
@@ -69,22 +69,22 @@ const AddBudgetModal = ({ isOpen, onClose, onSave }: { isOpen: boolean, onClose:
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{t('add_budget')}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{t('add_budget')}</h2>
             <div className="space-y-4">
                 <div>
                     <Select value={categoryId} onChange={e => setCategoryId(e.target.value)}>
                         <option value="">{t('category')}</option>
-                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                        {categories.map(c => <option key={c.id} value={c.id} className="bg-slate-900 text-white">{c.name}</option>)}
                     </Select>
-                    {errors.categoryId && <p className="text-red-400 text-sm mt-1 px-4">{errors.categoryId}</p>}
+                    {errors.categoryId && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.categoryId}</p>}
                 </div>
                 <div>
                     <Input type="number" placeholder={t('monthly_limit')} value={amount} onChange={e => setAmount(e.target.value)} />
-                    {errors.amount && <p className="text-red-400 text-sm mt-1 px-4">{errors.amount}</p>}
+                    {errors.amount && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.amount}</p>}
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
-                    <Button onClick={handleSave}>{t('save')}</Button>
+                    <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
             </div>
         </Modal>
@@ -144,12 +144,14 @@ export const Budgets = () => {
 
             <AddBudgetModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={fetchData} />
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-white">{t('manage_budgets')}</h2>
-                <Button onClick={() => setIsModalOpen(true)} className="!w-auto px-6 py-2">{t('add_budget')}</Button>
+                <h2 className="text-[20px] font-bold text-white">{t('manage_budgets')}</h2>
+                <Button onClick={() => setIsModalOpen(true)} variant="primary" className="!w-auto px-4 !py-2">
+                    {t('add_budget')}
+                </Button>
             </div>
             
             {budgets.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {budgets.map(budget => (
                         <BudgetItem 
                             key={budget.id}
@@ -161,11 +163,11 @@ export const Budgets = () => {
                     ))}
                 </div>
             ) : (
-                 <Card>
+                 <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
                     <div className="text-center py-8">
-                        <h3 className="text-lg font-semibold text-white">No Budgets Set</h3>
-                        <p className="text-gray-400 mt-2">Create budgets for spending categories to keep your finances in check.</p>
-                        <Button onClick={() => setIsModalOpen(true)} className="mt-6 !w-auto px-6">
+                        <h2 className="text-[20px] font-bold text-white">No Budgets Set</h2>
+                        <p className="text-gray-300 text-[14px] mt-2">Create budgets for spending categories to keep your finances in check.</p>
+                        <Button onClick={() => setIsModalOpen(true)} variant="primary" className="mt-6 !w-auto px-6">
                             {t('add_budget')}
                         </Button>
                     </div>

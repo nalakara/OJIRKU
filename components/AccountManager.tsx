@@ -56,26 +56,26 @@ const AddAccountModal = ({ isOpen, onClose, onSave, accountToEdit }: { isOpen: b
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{isEditing ? t('edit_account') : t('add_account')}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{isEditing ? t('edit_account') : t('add_account')}</h2>
             <div className="space-y-4">
                 <div>
                     <Input placeholder={t('account_name')} value={name} onChange={e => setName(e.target.value)} />
-                    {errors.name && <p className="text-red-400 text-sm mt-1 px-4">{errors.name}</p>}
+                    {errors.name && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.name}</p>}
                 </div>
                 <Select value={type} onChange={e => setType(e.target.value as Account['type'])}>
-                    <option value="Bank">{t('account_type')}: Bank</option>
-                    <option value="Cash">{t('account_type')}: Cash</option>
-                    <option value="Credit Card">{t('account_type')}: Credit Card</option>
-                    <option value="Investment">{t('account_type')}: Investment</option>
-                    <option value="E-Wallet">{t('account_type')}: E-Wallet</option>
+                    <option value="Bank" className="bg-slate-900 text-white">{t('account_type')}: Bank</option>
+                    <option value="Cash" className="bg-slate-900 text-white">{t('account_type')}: Cash</option>
+                    <option value="Credit Card" className="bg-slate-900 text-white">{t('account_type')}: Credit Card</option>
+                    <option value="Investment" className="bg-slate-900 text-white">{t('account_type')}: Investment</option>
+                    <option value="E-Wallet" className="bg-slate-900 text-white">{t('account_type')}: E-Wallet</option>
                 </Select>
                 <div>
                     <Input type="number" placeholder={t('initial_balance')} value={initialBalance} onChange={e => setInitialBalance(e.target.value)} disabled={isEditing} />
-                    {errors.initialBalance && <p className="text-red-400 text-sm mt-1 px-4">{errors.initialBalance}</p>}
+                    {errors.initialBalance && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.initialBalance}</p>}
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
-                    <Button onClick={handleSave}>{t('save')}</Button>
+                    <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
             </div>
         </Modal>
@@ -86,15 +86,15 @@ const AddAccountModal = ({ isOpen, onClose, onSave, accountToEdit }: { isOpen: b
 const AccountItem = ({ account, balance, onEdit, onDelete }: { account: Account, balance: number, onEdit: () => void, onDelete: () => void }) => {
     const { t } = useI18n();
     return (
-        <li className="flex items-center justify-between p-3 bg-black/20 rounded-xl">
+        <li className="flex items-center justify-between p-3 bg-black/25 backdrop-blur-md rounded-[8px] border border-white/10">
             <div>
-                <p className="font-bold text-white">{account.name}</p>
-                <p className="text-sm text-gray-400">{account.type}</p>
+                <p className="font-bold text-[14px] text-white">{account.name}</p>
+                <p className="text-[12px] text-gray-300">{account.type}</p>
             </div>
-            <div className="flex items-center space-x-2">
-                <p className="font-semibold text-lg text-white">{formatCurrency(balance)}</p>
-                <button onClick={onEdit} className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_edit_account') + account.name}><EditIcon className="w-5 h-5"/></button>
-                <button onClick={onDelete} className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_account') + account.name}><TrashIcon className="w-5 h-5"/></button>
+            <div className="flex items-center space-x-1">
+                <p className="font-semibold text-[14px] text-white mr-2">{formatCurrency(balance)}</p>
+                <button onClick={onEdit} className="p-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_edit_account') + account.name}><EditIcon className="w-4 h-4"/></button>
+                <button onClick={onDelete} className="p-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_account') + account.name}><TrashIcon className="w-4 h-4"/></button>
             </div>
         </li>
     );
@@ -181,18 +181,18 @@ export const AccountManager = () => {
                 onSave={fetchData}
                 accountToEdit={editingAccount}
             />
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-white">{t('manage_accounts')}</h2>
-                    <Button onClick={handleOpenAddModal} variant="secondary" className="!w-auto px-4 !py-2 text-sm">{t('add_account')}</Button>
+                    <h2 className="text-[20px] font-bold text-white">{t('manage_accounts')}</h2>
+                    <Button onClick={handleOpenAddModal} variant="primary" className="!w-auto px-3 !py-1.5 text-[14px]">{t('add_account')}</Button>
                 </div>
-                {error && <p className="text-red-400 mb-4">{error}</p>}
+                {error && <p className="text-red-400 text-[12px] mb-4 bg-red-950/40 p-2.5 rounded-[8px] border border-red-500/30">{error}</p>}
                 {accounts.length > 0 ? (
-                    <ul className="space-y-3">
+                    <ul className="space-y-2">
                         {accounts.map(acc => (
                             acc.id ? <AccountItem 
                                 key={acc.id} 
-                                account={acc}
+                                account={acc} 
                                 balance={balances[acc.id] || 0}
                                 onEdit={() => handleOpenEditModal(acc)}
                                 onDelete={() => handleDeleteRequest(acc.id)}
@@ -200,7 +200,7 @@ export const AccountManager = () => {
                         ))}
                     </ul>
                 ) : (
-                    <p className="text-center text-gray-400 py-4">No accounts found. Click 'Add Account' to start.</p>
+                    <p className="text-center text-gray-300 text-[14px] py-4">No accounts found. Click 'Add Account' to start.</p>
                 )}
             </Card>
         </>

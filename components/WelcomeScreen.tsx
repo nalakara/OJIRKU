@@ -9,13 +9,13 @@ interface WelcomeScreenProps {
 }
 
 const OjirkuLogo = ({ className }: { className?: string }) => (
-    <div className={`w-32 h-32 rounded-full flex items-center justify-center bg-white/20 backdrop-blur-lg border border-white/30 ${className}`}>
+    <div className={`w-28 h-28 rounded-[8px] flex items-center justify-center bg-white/20 backdrop-blur-lg border border-white/30 ${className}`}>
         <svg
             id="Layer_1"
             data-name="Layer 1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 189.52 190.62"
-            className="w-20 h-20"
+            className="w-16 h-16"
         >
             <defs>
                 <style>
@@ -50,24 +50,24 @@ export const WelcomeScreen = ({ onSignIn, onSignUp, isPinSet }: WelcomeScreenPro
     return (
         <div className="flex flex-col h-screen text-white relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 z-0"></div>
-            <div className="absolute inset-0 bg-black/30 z-10"></div>
+            <div className="absolute inset-0 bg-black/30 z-10 backdrop-blur-[2px]"></div>
             
-            <main className="flex-grow flex flex-col justify-center items-center p-4 text-center z-20">
-                <OjirkuLogo className="mb-6" />
+            <main className="flex-grow flex flex-col justify-center items-center p-6 text-center max-w-[1280px] mx-auto w-full z-20">
+                <OjirkuLogo className="mb-6 shadow-2xl" />
                 
-                <h1 className="text-6xl font-black text-white" style={{fontFamily: "'Manrope', sans-serif"}}>OJIRKU</h1>
-                <p className="mt-2 text-lg text-gray-200">{t('welcome_subtitle')}</p>
+                <h1 className="text-[32px] font-black text-white tracking-tight">OJIRKU</h1>
+                <p className="mt-2 text-[14px] text-gray-100 max-w-sm">{t('welcome_subtitle')}</p>
 
-                <div className="w-full max-w-xs mt-24 space-y-4">
+                <div className="w-full max-w-xs mt-12 space-y-3">
                     <Button onClick={onSignIn} disabled={!isPinSet} variant="primary">
                         {t('sign_in')}
                     </Button>
-                    <Button onClick={onSignUp} disabled={isPinSet} variant="secondary" className="bg-white/20 text-white hover:bg-white/30">
+                    <Button onClick={onSignUp} disabled={isPinSet} variant="secondary" className="bg-white/20 text-white hover:bg-white/30 border border-white/20">
                         {t('sign_up_welcome')}
                     </Button>
                 </div>
             </main>
-            <footer className="text-center p-6 text-sm text-gray-300 z-20">
+            <footer className="text-center p-6 text-[12px] text-gray-200 z-20">
                 by NALAKARA
             </footer>
         </div>

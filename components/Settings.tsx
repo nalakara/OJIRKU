@@ -110,50 +110,50 @@ export const Settings = () => {
     };
 
     return (
-        <Page className="space-y-6">
+        <Page className="space-y-4">
             {installPrompt && (
-                 <Card>
-                    <h2 className="text-xl font-bold mb-4 text-white">Application</h2>
+                 <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                    <h2 className="text-[20px] font-bold mb-4 text-white">Application</h2>
                     <Button onClick={handleInstallClick} variant="primary">
                         {t('install_app')}
                     </Button>
                 </Card>
             )}
 
-            <Card>
-                <h2 className="text-xl font-bold mb-4 text-white">{t('language')}</h2>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-4 text-white">{t('language')}</h2>
                 <Select value={language} onChange={e => setLanguage(e.target.value as 'en' | 'id')}>
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="en">English</option>
+                    <option value="id" className="bg-slate-900 text-white">Bahasa Indonesia</option>
+                    <option value="en" className="bg-slate-900 text-white">English</option>
                 </Select>
             </Card>
 
-            <Card>
-                <h2 className="text-xl font-bold mb-4 text-white">{t('security')}</h2>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-4 text-white">{t('security')}</h2>
                 <Button onClick={handleChangePin} variant="secondary">
                     {t('change_pin')}
                 </Button>
             </Card>
 
-            <Card>
-                <h2 className="text-xl font-bold mb-2 text-white">{t('gemini_api_key')}</h2>
-                <p className="text-sm text-gray-300 mb-4">{t('gemini_api_key_desc')}</p>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-2 text-white">{t('gemini_api_key')}</h2>
+                <p className="text-[14px] text-gray-300 mb-4">{t('gemini_api_key_desc')}</p>
                 
                 {apiKeyMasked && !isEditingApiKey ? (
                     <div className="space-y-4">
-                        <div className="flex items-center justify-between p-3 bg-black/30 rounded-2xl border border-white/10">
+                        <div className="flex items-center justify-between p-3 bg-black/30 rounded-[8px] border border-white/10">
                             <div>
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-900 text-teal-300 mb-1">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[11px] font-medium bg-teal-900/60 text-teal-300 mb-1 border border-teal-500/30">
                                     {t('api_key_configured')}
                                 </span>
-                                <p className="font-mono text-sm text-gray-200">{apiKeyMasked}</p>
+                                <p className="font-mono text-[14px] text-gray-200">{apiKeyMasked}</p>
                             </div>
                         </div>
                         <div className="flex gap-3">
-                            <Button onClick={() => { setIsEditingApiKey(true); setApiKeyInput(''); }} variant="secondary" className="!py-2 text-sm">
+                            <Button onClick={() => { setIsEditingApiKey(true); setApiKeyInput(''); }} variant="secondary" className="!py-1.5 text-[14px]">
                                 {t('change_key')}
                             </Button>
-                            <Button onClick={handleRemoveApiKey} variant="danger" className="!py-2 text-sm !w-auto px-4">
+                            <Button onClick={handleRemoveApiKey} variant="danger" className="!py-1.5 text-[14px] !w-auto px-4">
                                 {t('remove_key')}
                             </Button>
                         </div>
@@ -166,16 +166,16 @@ export const Settings = () => {
                             value={apiKeyInput}
                             onChange={e => setApiKeyInput(e.target.value)}
                         />
-                        <p className="text-xs text-gray-400">
+                        <p className="text-[12px] text-gray-300">
                             {t('get_api_key_help')}
                         </p>
                         <div className="flex gap-3 pt-1">
                             {isEditingApiKey && (
-                                <Button onClick={() => { setIsEditingApiKey(false); setApiKeyInput(''); }} variant="secondary" className="!py-2 text-sm">
+                                <Button onClick={() => { setIsEditingApiKey(false); setApiKeyInput(''); }} variant="secondary" className="!py-1.5 text-[14px]">
                                     {t('cancel')}
                                 </Button>
                             )}
-                            <Button onClick={handleSaveApiKey} disabled={!apiKeyInput.trim()} variant="primary" className="!py-2 text-sm">
+                            <Button onClick={handleSaveApiKey} disabled={!apiKeyInput.trim()} variant="primary" className="!py-1.5 text-[14px]">
                                 {t('save_key')}
                             </Button>
                         </div>
@@ -183,10 +183,23 @@ export const Settings = () => {
                 )}
             </Card>
 
-            <Card>
-                <h2 className="text-xl font-bold mb-4 text-white">{t('data_export')}</h2>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-4 text-white">{t('data_export')}</h2>
                 <Button onClick={handleExport} disabled={isExporting} variant="secondary">
                     {isExporting ? t('exporting') : t('export_transactions_csv')}
+                </Button>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-2 text-white">{t('help_and_guide')}</h2>
+                <p className="text-[14px] text-gray-300 mb-4">{t('walkthrough_desc')}</p>
+                <Button 
+                    onClick={() => {
+                        window.dispatchEvent(new CustomEvent('ojirku_start_walkthrough'));
+                    }} 
+                    variant="secondary"
+                >
+                    {t('replay_walkthrough')}
                 </Button>
             </Card>
 

@@ -30,31 +30,31 @@ const Markdown = ({ content }: { content: string }) => {
     lines.forEach(line => {
         if (line.startsWith('# ')) {
             closeLists();
-            html += `<h1 class="text-2xl font-bold mt-6 mb-3 text-white">${processInlines(line.substring(2))}</h1>`;
+            html += `<h1 class="text-[16px] font-bold mt-4 mb-2 text-white">${processInlines(line.substring(2))}</h1>`;
         } else if (line.startsWith('## ')) {
             closeLists();
-            html += `<h2 class="text-xl font-bold mt-5 mb-2 text-white">${processInlines(line.substring(3))}</h2>`;
+            html += `<h2 class="text-[20px] font-bold mt-3 mb-2 text-white">${processInlines(line.substring(3))}</h2>`;
         } else if (line.startsWith('### ')) {
             closeLists();
-            html += `<h3 class="text-lg font-bold mt-4 mb-1 text-white">${processInlines(line.substring(4))}</h3>`;
+            html += `<h3 class="text-[14px] font-bold mt-3 mb-1 text-white">${processInlines(line.substring(4))}</h3>`;
         } else if (line.startsWith('* ') || line.startsWith('- ')) {
             if (inOrderedList) closeLists();
             if (!inList) {
-                html += '<ul class="space-y-1 my-2 list-disc list-inside text-gray-300">';
+                html += '<ul class="space-y-1 my-2 list-disc list-inside text-gray-200 text-[14px]">';
                 inList = true;
             }
-            html += `<li class="ml-4">${processInlines(line.substring(2))}</li>`;
+            html += `<li class="ml-2">${processInlines(line.substring(2))}</li>`;
         } else if (/^\d+\.\s/.test(line)) {
             if (inList) closeLists();
             if (!inOrderedList) {
-                html += '<ol class="space-y-1 my-2 list-decimal list-inside text-gray-300">';
+                html += '<ol class="space-y-1 my-2 list-decimal list-inside text-gray-200 text-[14px]">';
                 inOrderedList = true;
             }
-            html += `<li class="ml-4">${processInlines(line.replace(/^\d+\.\s/, ''))}</li>`;
+            html += `<li class="ml-2">${processInlines(line.replace(/^\d+\.\s/, ''))}</li>`;
         } else {
             closeLists();
             if (line.trim()) {
-                html += `<p class="my-2 text-gray-300">${processInlines(line)}</p>`;
+                html += `<p class="my-2 text-gray-200 text-[14px] leading-relaxed">${processInlines(line)}</p>`;
             }
         }
     });
@@ -119,42 +119,42 @@ export const AISuggestions = () => {
 
     return (
         <Page>
-            <Card>
-                <h2 className="text-xl font-bold mb-2 text-white">{t('ai_financial_review')}</h2>
-                <p className="text-gray-300 mb-4">
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="text-[20px] font-bold mb-2 text-white">{t('ai_financial_review')}</h2>
+                <p className="text-gray-300 text-[14px] mb-4">
                     Get personalized insights and suggestions based on your recent financial activity. This feature requires an internet connection and your personal Gemini API key.
                 </p>
 
                 {!isKeyConfigured ? (
-                    <div className="p-4 bg-white/5 border border-yellow-500/30 rounded-2xl mb-4">
-                        <p className="text-yellow-300 text-sm font-medium mb-1">
+                    <div className="p-3 bg-white/10 border border-yellow-500/30 rounded-[8px] mb-4 backdrop-blur-md">
+                        <p className="text-yellow-300 text-[14px] font-semibold mb-1">
                             {t('ai_key_required_notice')}
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-[12px] text-gray-300">
                             {t('get_api_key_help')}
                         </p>
                     </div>
                 ) : null}
 
-                <Button onClick={handleAnalysis} disabled={isLoading || !isKeyConfigured}>
+                <Button onClick={handleAnalysis} variant="primary" disabled={isLoading || !isKeyConfigured}>
                     {isLoading ? t('generating_insights') : t('analyze_finances')}
                 </Button>
             </Card>
 
             {isLoading && (
-                <Card className="mt-6">
+                <Card className="mt-4 bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
                     <Spinner />
                 </Card>
             )}
 
             {error && (
-                <Card className="mt-6 border-l-4 border-red-500">
-                    <p className="text-red-400">{error}</p>
+                <Card className="mt-4 border-l-4 border-red-500 bg-white/10 backdrop-blur-md rounded-[8px]">
+                    <p className="text-red-400 text-[14px]">{error}</p>
                 </Card>
             )}
 
             {report && (
-                 <Card className="mt-6">
+                 <Card className="mt-4 bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
                     <Markdown content={report} />
                 </Card>
             )}

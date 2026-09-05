@@ -80,23 +80,23 @@ export const Dashboard = () => {
 
     return (
         <Page>
-            <Card className="text-center bg-white/10 border-none">
-                <h3 className="text-lg text-gray-300">{t('net_worth')}</h3>
-                <p className={`text-5xl font-black tracking-tight ${netWorth >= 0 ? 'text-white' : 'text-red-400'}`}>{formatCurrency(netWorth)}</p>
-                <div className="flex justify-center gap-6 mt-2 text-sm">
+            <Card className="text-center bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h3 className="text-[14px] font-medium text-gray-300">{t('net_worth')}</h3>
+                <p className={`text-[36px] font-extrabold tracking-tight my-1 ${netWorth >= 0 ? 'text-white' : 'text-red-400'}`}>{formatCurrency(netWorth)}</p>
+                <div className="flex justify-center gap-6 mt-2 text-[14px]">
                     <div>
-                        <span className="text-gray-400">{t('total_balance')}: </span>
+                        <span className="text-gray-300">{t('total_balance')}: </span>
                         <span className="font-semibold text-teal-300">{formatCurrency(totalBalance)}</span>
                     </div>
                     <div>
-                        <span className="text-gray-400">{t('total_debt')}: </span>
+                        <span className="text-gray-300">{t('total_debt')}: </span>
                         <span className="font-semibold text-pink-300">{formatCurrency(totalDebt)}</span>
                     </div>
                 </div>
             </Card>
 
-            <Card>
-                <h3 className="font-bold text-lg mb-4 text-white">{t('monthly_overview')}</h3>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="font-semibold text-[20px] mb-4 text-white">{t('monthly_overview')}</h2>
                 <div className="h-40 -mx-4">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={chartData} layout="vertical" margin={{ top: 0, right: 30, left: 30, bottom: 0 }}>
@@ -104,35 +104,38 @@ export const Dashboard = () => {
                             <YAxis type="category" dataKey="name" hide />
                             <Tooltip 
                                 formatter={(value: number) => formatCurrency(value)} 
-                                cursor={{fill: 'rgba(255,255,255,0.1)'}}
+                                cursor={{fill: 'rgba(255,255,255,0.08)'}}
                                 contentStyle={{
-                                    background: 'rgba(30,30,30,0.8)',
+                                    background: 'rgba(29, 23, 46, 0.95)',
                                     border: '1px solid rgba(255,255,255,0.2)',
-                                    borderRadius: '1rem',
+                                    borderRadius: '8px',
+                                    color: '#ffffff',
+                                    fontSize: '14px',
+                                    backdropFilter: 'blur(8px)'
                                 }}
-                                labelStyle={{ color: '#fff' }}
+                                labelStyle={{ color: '#ffffff', fontWeight: 600 }}
                             />
-                            <Legend wrapperStyle={{ color: '#fff' }} />
-                            <Bar dataKey={t('income')} stackId="a" fill="#14B8A6" radius={[10, 0, 0, 10]}/>
-                            <Bar dataKey={t('expense')} stackId="a" fill="#F472B6" radius={[0, 10, 10, 0]}/>
+                            <Legend wrapperStyle={{ color: '#ffffff', fontSize: '14px' }} />
+                            <Bar dataKey={t('income')} stackId="a" fill="#14B8A6" radius={[4, 0, 0, 4]}/>
+                            <Bar dataKey={t('expense')} stackId="a" fill="#F472B6" radius={[0, 4, 4, 0]}/>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
             </Card>
             
-            <Card>
-                <h3 className="font-bold text-lg mb-4 text-white">{t('recent_transactions')}</h3>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
+                <h2 className="font-semibold text-[20px] mb-4 text-white">{t('recent_transactions')}</h2>
                 {recentTransactions.length > 0 ? (
-                    <ul className="space-y-4">
+                    <ul className="space-y-3">
                         {recentTransactions.map(tx => {
                             const account = accounts.find(a => a.id === tx.accountId);
                             return (
-                                <li key={tx.id} className="flex justify-between items-center">
+                                <li key={tx.id} className="flex justify-between items-center py-2 border-b border-white/10 last:border-0">
                                     <div>
-                                        <p className="font-semibold text-white">{tx.description}</p>
-                                        <p className="text-sm text-gray-400">{account?.name || '...'} &bull; {new Date(tx.date).toLocaleDateString()}</p>
+                                        <p className="font-semibold text-white text-[14px]">{tx.description}</p>
+                                        <p className="text-[12px] text-gray-300">{account?.name || '...'} &bull; {new Date(tx.date).toLocaleDateString()}</p>
                                     </div>
-                                    <p className={`font-bold ${tx.type === TransactionType.INCOME ? 'text-teal-400' : 'text-pink-400'}`}>
+                                    <p className={`font-bold text-[14px] ${tx.type === TransactionType.INCOME ? 'text-teal-300' : 'text-pink-300'}`}>
                                         {tx.type === TransactionType.INCOME ? '+' : '-'} {formatCurrency(tx.amount)}
                                     </p>
                                 </li>
@@ -141,7 +144,7 @@ export const Dashboard = () => {
                     </ul>
                 ) : (
                     <div className="text-center py-4">
-                        <p className="text-gray-400">No recent transactions to display.</p>
+                        <p className="text-gray-300 text-[14px]">No recent transactions to display.</p>
                     </div>
                 )}
             </Card>

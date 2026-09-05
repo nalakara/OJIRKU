@@ -14,34 +14,39 @@ export const TrashIcon = (props: React.SVGProps<SVGSVGElement>) => <svg {...prop
 export const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" ><path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" /></svg>;
 
 // --- UI Components ---
+// --- UI Components ---
 export const Card = ({ children, className }: { children: ReactNode, className?: string }) => (
-  <div className={`bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-lg p-4 sm:p-6 ${className}`}>
+  <div className={`bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px] p-4 sm:p-6 shadow-sm ${className || ''}`}>
     {children}
   </div>
 );
 
-export const Button = ({ children, onClick, variant = 'primary', className, disabled, ...props }: { children: ReactNode, onClick?: (...args: any[]) => void, variant?: 'primary' | 'secondary' | 'danger', className?: string, disabled?: boolean, [x:string]: any }) => {
-  const baseClasses = 'w-full text-center font-bold py-3 px-4 rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-4';
+export const Button = ({ children, onClick, variant = 'primary', className, disabled, ...props }: { children: ReactNode, onClick?: (...args: any[]) => void, variant?: 'primary' | 'secondary' | 'danger' | 'icon', className?: string, disabled?: boolean, [x:string]: any }) => {
+  const baseClasses = 'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-white/20 select-none cursor-pointer';
   const variantClasses = {
-    primary: 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-lg shadow-orange-500/20 hover:shadow-xl hover:shadow-orange-500/40 focus:ring-orange-400/50',
-    secondary: 'bg-white/10 text-gray-200 hover:bg-white/20 focus:ring-white/30',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500/50',
+    // Button 3: Vibrant gradient with 8px radius, padding 10px 12px
+    primary: 'w-full bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-md shadow-orange-500/20 hover:shadow-orange-500/35 rounded-[8px] px-3 py-2.5 text-sm active:scale-[0.99]',
+    // Button 2: Glass secondary with 8px radius, padding 6px 10px
+    secondary: 'bg-white/10 text-white hover:bg-white/20 border border-white/10 rounded-[8px] px-2.5 py-1.5 text-xs active:scale-[0.99]',
+    // Button 1: Icon/ghost with 8px radius, padding 8px
+    icon: 'p-2 rounded-[8px] bg-transparent text-gray-300 hover:text-white hover:bg-white/10',
+    danger: 'w-full bg-red-600 text-white hover:bg-red-700 rounded-[8px] px-3 py-2.5 text-sm active:scale-[0.99]',
   };
-  const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed shadow-none' : '';
+  const disabledClasses = disabled ? 'opacity-40 cursor-not-allowed pointer-events-none shadow-none' : '';
   
   return (
-    <button onClick={onClick} disabled={disabled} className={`${baseClasses} ${variantClasses[variant]} ${className || ''} ${disabledClasses}`} {...props}>
+    <button onClick={onClick} disabled={disabled} className={`${baseClasses} ${variantClasses[variant] || variantClasses.primary} ${className || ''} ${disabledClasses}`} {...props}>
       {children}
     </button>
   );
 };
 
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
-  <input {...props} className={`w-full p-3 bg-black/20 border border-white/10 text-gray-200 placeholder-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all ${props.className}`} />
+  <input {...props} className={`w-full px-3 py-2.5 bg-black/20 border border-white/15 text-white placeholder-gray-400 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-sm transition-all ${props.className || ''}`} />
 );
 
 export const Select = (props: React.SelectHTMLAttributes<HTMLSelectElement>) => (
-    <select {...props} className={`w-full p-3 bg-black/20 border border-white/10 text-gray-200 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all ${props.className}`}>
+    <select {...props} className={`w-full px-3 py-2.5 bg-black/20 border border-white/15 text-white rounded-[8px] appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-sm transition-all ${props.className || ''}`}>
         {props.children}
     </select>
 );
@@ -62,13 +67,13 @@ export const Modal = ({ children, isOpen, onClose }: { children: ReactNode, isOp
 
   return (
     <div 
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-center p-4"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <div className="w-full max-w-md m-auto" onClick={e => e.stopPropagation()}>
-        <Card className="shadow-2xl border-white/20">
+        <Card className="shadow-2xl border-white/20 bg-slate-900/90 backdrop-blur-xl">
             {children}
         </Card>
       </div>
@@ -92,13 +97,13 @@ export const ConfirmationModal = ({
   const { t } = useI18n();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl font-bold mb-4">{title}</h2>
-      <div className="text-gray-300 mb-6">{children}</div>
-      <div className="flex gap-4">
-        <Button onClick={onClose} variant="secondary">
+      <h2 className="text-xl font-bold mb-3 text-white">{title}</h2>
+      <div className="text-gray-300 mb-6 text-sm">{children}</div>
+      <div className="flex gap-3">
+        <Button onClick={onClose} variant="secondary" className="!w-full !py-2.5 text-sm">
           {t('cancel')}
         </Button>
-        <Button onClick={onConfirm} variant="danger">
+        <Button onClick={onConfirm} variant="danger" className="!w-full !py-2.5 text-sm">
           {t('confirm_action')}
         </Button>
       </div>

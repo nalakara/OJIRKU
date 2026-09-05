@@ -40,15 +40,15 @@ const AddCategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, type }: { i
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{isEditing ? t('edit_category') : t('add_category')}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{isEditing ? t('edit_category') : t('add_category')}</h2>
             <div className="space-y-4">
                  <div>
                     <Input placeholder={t('category_name')} value={name} onChange={e => setName(e.target.value)} />
-                    {error && <p className="text-red-400 text-sm mt-1 px-4">{error}</p>}
+                    {error && <p className="text-red-400 text-[12px] mt-1 px-3">{error}</p>}
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
-                    <Button onClick={handleSave}>{t('save')}</Button>
+                    <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
             </div>
         </Modal>
@@ -58,14 +58,14 @@ const AddCategoryModal = ({ isOpen, onClose, onSave, categoryToEdit, type }: { i
 const CategoryItem = ({ category, onEdit, onDelete, percentage, color }: { category: Category, onEdit: () => void, onDelete: () => void, percentage: number, color: string }) => {
     const { t } = useI18n();
     return (
-        <li className="flex items-center justify-between p-3 bg-black/30 rounded-xl">
-            <div className="flex items-center gap-4">
+        <li className="flex items-center justify-between p-3 bg-black/25 backdrop-blur-md rounded-[8px] border border-white/10">
+            <div className="flex items-center gap-3">
                 <RadialProgress percentage={percentage} color={color} />
-                <p className="font-semibold text-white">{category.name}</p>
+                <p className="font-semibold text-[14px] text-white">{category.name}</p>
             </div>
             <div className="flex items-center space-x-1">
-                <button onClick={onEdit} className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_edit_category') + category.name}><EditIcon className="w-5 h-5"/></button>
-                <button onClick={onDelete} className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_category') + category.name}><TrashIcon className="w-5 h-5"/></button>
+                <button onClick={onEdit} className="p-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_edit_category') + category.name}><EditIcon className="w-4 h-4"/></button>
+                <button onClick={onDelete} className="p-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_category') + category.name}><TrashIcon className="w-4 h-4"/></button>
             </div>
         </li>
     );
@@ -75,20 +75,20 @@ const CollapsibleSection = ({ title, action, children, defaultOpen = true }: { t
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
-        <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all duration-300">
-            <div className="flex justify-between items-center p-4 cursor-pointer" onClick={() => setIsOpen(!isOpen)} role="button" aria-expanded={isOpen}>
-                <h3 className="text-lg font-bold text-white">{title}</h3>
+        <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px] overflow-hidden transition-all duration-200">
+            <div className="flex justify-between items-center p-3 cursor-pointer select-none" onClick={() => setIsOpen(!isOpen)} role="button" aria-expanded={isOpen}>
+                <h3 className="text-[14px] font-bold text-white">{title}</h3>
                 <div className="flex items-center gap-2">
                     <div onClick={e => e.stopPropagation()}>
                         {action}
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-5 h-5 text-gray-300 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
                         <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                     </svg>
                 </div>
             </div>
             {isOpen && (
-                <div className="px-4 pb-4">
+                <div className="px-3 pb-3">
                     {children}
                 </div>
             )}
@@ -185,15 +185,15 @@ export const CategoryManager = () => {
                 type={modalType}
             />
             
-            <div>
-                <h2 className="text-xl font-bold text-white mb-4">{t('manage_categories')}</h2>
-                {error && <p className="text-red-400 mb-4 bg-red-900/50 p-3 rounded-xl border border-red-500/50">{error}</p>}
+            <div className="space-y-3">
+                <h2 className="text-[20px] font-bold text-white">{t('manage_categories')}</h2>
+                {error && <p className="text-red-400 text-[12px] mb-4 bg-red-950/40 p-2.5 rounded-[8px] border border-red-500/30">{error}</p>}
 
                 <div className="space-y-3">
                     <CollapsibleSection
                         title={t('expense_categories')}
                         action={
-                            <Button onClick={() => handleOpenAddModal(TransactionType.EXPENSE)} variant="secondary" className="!w-auto px-4 !py-1 text-sm">{t('add')}</Button>
+                            <Button onClick={() => handleOpenAddModal(TransactionType.EXPENSE)} variant="primary" className="!w-auto px-3 !py-1 text-[12px]">{t('add')}</Button>
                         }
                         defaultOpen={false}
                     >
@@ -211,14 +211,14 @@ export const CategoryManager = () => {
                                 ) : null)}
                             </ul>
                         ) : (
-                            <p className="text-center text-gray-400 py-2">No expense categories found.</p>
+                            <p className="text-center text-gray-300 text-[14px] py-2">No expense categories found.</p>
                         )}
                     </CollapsibleSection>
 
                     <CollapsibleSection
                         title={t('income_categories')}
                         action={
-                            <Button onClick={() => handleOpenAddModal(TransactionType.INCOME)} variant="secondary" className="!w-auto px-4 !py-1 text-sm">{t('add')}</Button>
+                            <Button onClick={() => handleOpenAddModal(TransactionType.INCOME)} variant="primary" className="!w-auto px-3 !py-1 text-[12px]">{t('add')}</Button>
                         }
                         defaultOpen={false}
                     >
@@ -236,7 +236,7 @@ export const CategoryManager = () => {
                                 ) : null)}
                             </ul>
                         ) : (
-                             <p className="text-center text-gray-400 py-2">No income categories found.</p>
+                             <p className="text-center text-gray-300 text-[14px] py-2">No income categories found.</p>
                         )}
                     </CollapsibleSection>
                 </div>

@@ -23,23 +23,23 @@ const GoalItem = ({ goal, onUpdate, onDelete }: { goal: Goal, onUpdate: () => vo
     };
 
     return (
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
             <div className="flex justify-between items-start mb-2">
                 <div>
-                    <span className="font-bold text-white">{goal.name}</span>
-                    <p className="font-semibold text-sm text-gray-400">{formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}</p>
+                    <span className="font-bold text-[14px] text-white">{goal.name}</span>
+                    <p className="font-semibold text-[12px] text-gray-300">{formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}</p>
                 </div>
-                <button onClick={onDelete} className="p-2 -mt-2 -mr-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_goal') + goal.name}><TrashIcon className="w-5 h-5"/></button>
+                <button onClick={onDelete} className="p-2 -mt-2 -mr-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10" aria-label={t('aria_delete_goal') + goal.name}><TrashIcon className="w-4 h-4"/></button>
             </div>
             
-            <div className="w-full bg-black/30 rounded-full h-4">
-                <div className="bg-gradient-to-r from-green-400 to-emerald-500 h-4 rounded-full flex items-center justify-center text-xs text-white font-bold" style={{ width: `${percentage}%` }}>
-                    {percentage > 10 && `${Math.round(percentage)}%`}
+            <div className="w-full bg-black/30 rounded-[4px] h-3.5">
+                <div className="bg-gradient-to-r from-green-400 to-emerald-500 h-3.5 rounded-[4px] flex items-center justify-center text-[10px] text-white font-bold" style={{ width: `${percentage}%` }}>
+                    {percentage > 15 && `${Math.round(percentage)}%`}
                 </div>
             </div>
-            <div className="flex gap-2 mt-4">
-                <Input type="number" value={addAmount} onChange={e => setAddAmount(e.target.value)} placeholder={t('amount')} className="!py-2 text-sm" />
-                <Button onClick={handleAdd} className="!w-auto px-4 !py-2 text-sm" disabled={!addAmount || parseFloat(addAmount) <= 0} aria-label={t('aria_add_to_goal') + goal.name}>{t('add')}</Button>
+            <div className="flex gap-2 mt-3">
+                <Input type="number" value={addAmount} onChange={e => setAddAmount(e.target.value)} placeholder={t('amount')} className="!py-1.5 text-[14px]" />
+                <Button onClick={handleAdd} variant="primary" className="!w-auto px-4 !py-1.5 text-[14px]" disabled={!addAmount || parseFloat(addAmount) <= 0} aria-label={t('aria_add_to_goal') + goal.name}>{t('add')}</Button>
             </div>
         </Card>
     );
@@ -81,19 +81,19 @@ const AddGoalModal = ({ isOpen, onClose, onSave }: { isOpen: boolean, onClose: (
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{t('add_goal')}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{t('add_goal')}</h2>
             <div className="space-y-4">
                 <div>
                     <Input placeholder={t('goal_name')} value={name} onChange={e => setName(e.target.value)} />
-                    {errors.name && <p className="text-red-400 text-sm mt-1 px-4">{errors.name}</p>}
+                    {errors.name && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.name}</p>}
                 </div>
                 <div>
                     <Input type="number" placeholder={t('target_amount')} value={targetAmount} onChange={e => setTargetAmount(e.target.value)} />
-                    {errors.targetAmount && <p className="text-red-400 text-sm mt-1 px-4">{errors.targetAmount}</p>}
+                    {errors.targetAmount && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.targetAmount}</p>}
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
-                    <Button onClick={handleSave}>{t('save')}</Button>
+                    <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
             </div>
         </Modal>
@@ -143,23 +143,25 @@ export const Goals = () => {
 
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-xl font-bold text-white">{t('financial_goals')}</h2>
-                    <p className="text-xs text-gray-400 mt-0.5">{t('virtual_goal_notice')}</p>
+                    <h2 className="text-[20px] font-bold text-white">{t('financial_goals')}</h2>
+                    <p className="text-[12px] text-gray-300 mt-0.5">{t('virtual_goal_notice')}</p>
                 </div>
-                <Button onClick={() => setIsModalOpen(true)} className="!w-auto px-6 py-2">{t('add_goal')}</Button>
+                <Button onClick={() => setIsModalOpen(true)} variant="primary" className="!w-auto px-4 !py-2">
+                    {t('add_goal')}
+                </Button>
             </div>
             {goals.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {goals.map(goal => (
                         <GoalItem key={goal.id} goal={goal} onUpdate={fetchData} onDelete={() => handleDeleteRequest(goal.id)} />
                     ))}
                 </div>
             ) : (
-                <Card>
+                <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
                     <div className="text-center py-8">
-                        <h3 className="text-lg font-semibold text-white">No Financial Goals Yet</h3>
-                        <p className="text-gray-400 mt-2">Set a goal to start saving for your dreams!</p>
-                        <Button onClick={() => setIsModalOpen(true)} className="mt-6 !w-auto px-6">
+                        <h2 className="text-[20px] font-bold text-white">No Financial Goals Yet</h2>
+                        <p className="text-gray-300 text-[14px] mt-2">Set a goal to start saving for your dreams!</p>
+                        <Button onClick={() => setIsModalOpen(true)} variant="primary" className="mt-6 !w-auto px-6">
                             {t('add_goal')}
                         </Button>
                     </div>

@@ -49,25 +49,25 @@ const AddDebtModal = ({ isOpen, onClose, onSave }: { isOpen: boolean, onClose: (
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{t('add_debt')}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{t('add_debt')}</h2>
             <div className="space-y-4">
                 <div>
                     <Input placeholder={t('debt_name')} value={name} onChange={e => setName(e.target.value)} />
-                    {errors.name && <p className="text-red-400 text-sm mt-1 px-4">{errors.name}</p>}
+                    {errors.name && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.name}</p>}
                 </div>
                 <div>
                     <Input placeholder={t('lender')} value={lender} onChange={e => setLender(e.target.value)} />
                 </div>
                 <div>
                     <Input type="number" placeholder={t('total_amount')} value={totalAmount} onChange={e => setTotalAmount(e.target.value)} />
-                    {errors.totalAmount && <p className="text-red-400 text-sm mt-1 px-4">{errors.totalAmount}</p>}
+                    {errors.totalAmount && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.totalAmount}</p>}
                 </div>
                 <div>
                     <Input type="date" placeholder={t('due_date')} value={dueDate} onChange={e => setDueDate(e.target.value)} />
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
-                    <Button onClick={handleSave}>{t('save')}</Button>
+                    <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
             </div>
         </Modal>
@@ -119,25 +119,25 @@ const MakePaymentModal = ({ isOpen, onClose, onSave, debt }: { isOpen: boolean, 
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2 className="text-2xl font-bold mb-6 text-center">{t('make_payment')} for {debt.name}</h2>
+            <h2 className="text-[20px] font-bold mb-6 text-center text-white">{t('make_payment')} for {debt.name}</h2>
             <div className="space-y-4">
                 <div>
                     <Input type="number" placeholder={t('amount')} value={amount} onChange={e => setAmount(e.target.value)} />
-                    {errors.amount && <p className="text-red-400 text-sm mt-1 px-4">{errors.amount}</p>}
+                    {errors.amount && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.amount}</p>}
                 </div>
                 <div>
                     <Select value={accountId} onChange={e => setAccountId(e.target.value)}>
                         <option value="">{t('account')}</option>
-                        {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+                        {accounts.map(a => <option key={a.id} value={a.id} className="bg-slate-900 text-white">{a.name}</option>)}
                     </Select>
-                    {errors.accountId && <p className="text-red-400 text-sm mt-1 px-4">{errors.accountId}</p>}
+                    {errors.accountId && <p className="text-red-400 text-[12px] mt-1 px-3">{errors.accountId}</p>}
                 </div>
                 <div>
                     <Input type="date" value={date} onChange={e => setDate(e.target.value)} />
                 </div>
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-3">
                     <Button onClick={onClose} variant="secondary">{t('cancel')}</Button>
-                    <Button onClick={handleSave}>{t('save')}</Button>
+                    <Button onClick={handleSave} variant="primary">{t('save')}</Button>
                 </div>
             </div>
         </Modal>
@@ -158,20 +158,20 @@ const PaymentHistoryModal = ({ isOpen, onClose, debt }: { isOpen: boolean, onClo
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-             <h2 className="text-2xl font-bold mb-4 text-center">{t('payment_history')}</h2>
-             <h3 className="text-lg text-gray-300 mb-6 text-center">{debt.name}</h3>
+             <h2 className="text-[20px] font-bold mb-2 text-center text-white">{t('payment_history')}</h2>
+             <p className="text-[14px] text-gray-300 mb-6 text-center">{debt.name}</p>
 
             {payments.length > 0 ? (
-                 <ul className="space-y-3 max-h-80 overflow-y-auto pr-2">
+                 <ul className="space-y-2 max-h-80 overflow-y-auto pr-1">
                     {payments.map(p => (
-                        <li key={p.id} className="flex justify-between items-center bg-black/20 p-3 rounded-lg">
-                            <p className="text-white font-semibold">{formatCurrency(p.amount)}</p>
-                            <p className="text-sm text-gray-400">{new Date(p.date).toLocaleDateString()}</p>
+                        <li key={p.id} className="flex justify-between items-center bg-black/30 p-3 rounded-[8px] border border-white/10">
+                            <p className="text-white font-semibold text-[14px]">{formatCurrency(p.amount)}</p>
+                            <p className="text-[12px] text-gray-400">{new Date(p.date).toLocaleDateString()}</p>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p className="text-center text-gray-400 py-4">{t('no_payments_yet')}</p>
+                <p className="text-center text-gray-300 text-[14px] py-4">{t('no_payments_yet')}</p>
             )}
 
             <div className="mt-6">
@@ -187,27 +187,27 @@ const DebtItem = ({ debt, onMakePayment, onShowHistory, onDelete }: { debt: Debt
     const remaining = debt.totalAmount - debt.amountPaid;
 
     return (
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
             <div className="flex justify-between items-start mb-2">
                 <div>
-                    <span className="font-bold text-white">{debt.name}</span>
-                    <p className="text-sm text-gray-400">{debt.lender}</p>
+                    <span className="font-bold text-[14px] text-white">{debt.name}</span>
+                    <p className="text-[12px] text-gray-300">{debt.lender}</p>
                 </div>
-                <button onClick={onDelete} className="p-2 -mt-2 -mr-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10"><TrashIcon className="w-5 h-5" /></button>
+                <button onClick={onDelete} className="p-2 -mt-2 -mr-2 rounded-[8px] text-gray-300 hover:text-white hover:bg-white/10"><TrashIcon className="w-4 h-4" /></button>
             </div>
 
-            <div className="w-full bg-black/30 rounded-full h-2.5 my-3">
-                <div className="bg-gradient-to-r from-blue-400 to-cyan-400 h-2.5 rounded-full" style={{ width: `${percentage}%` }}></div>
+            <div className="w-full bg-black/30 rounded-[4px] h-2.5 my-3">
+                <div className="bg-gradient-to-r from-blue-400 to-cyan-400 h-2.5 rounded-[4px]" style={{ width: `${percentage}%` }}></div>
             </div>
             
-            <div className="flex justify-between text-sm mb-4">
+            <div className="flex justify-between text-[12px] mb-4">
                 <span className="text-gray-300">{t('paid')}: <span className="font-semibold text-white">{formatCurrency(debt.amountPaid)}</span></span>
                 <span className="text-gray-300">{t('remaining')}: <span className="font-semibold text-white">{formatCurrency(remaining)}</span></span>
             </div>
 
-            <div className="flex gap-2 mt-4 text-sm">
-                <Button onClick={onShowHistory} variant="secondary" className="!py-2 text-xs">{t('payment_history')}</Button>
-                <Button onClick={onMakePayment} className="!py-2 text-xs" disabled={remaining <= 0}>{t('make_payment')}</Button>
+            <div className="flex gap-2 mt-4 text-[14px]">
+                <Button onClick={onShowHistory} variant="secondary" className="!py-1.5 text-[12px] flex-1">{t('payment_history')}</Button>
+                <Button onClick={onMakePayment} variant="primary" className="!py-1.5 text-[12px] flex-1" disabled={remaining <= 0}>{t('make_payment')}</Button>
             </div>
         </Card>
     );
@@ -271,12 +271,14 @@ export const Debts = () => {
             </ConfirmationModal>
 
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-white">{t('manage_debts')}</h2>
-                <Button onClick={() => setIsAddModalOpen(true)} className="!w-auto px-6 py-2">{t('add_debt')}</Button>
+                <h2 className="text-[20px] font-bold text-white">{t('manage_debts')}</h2>
+                <Button onClick={() => setIsAddModalOpen(true)} variant="primary" className="!w-auto px-4 !py-2">
+                    {t('add_debt')}
+                </Button>
             </div>
             
             {debts.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {debts.map(debt => (
                         <DebtItem
                             key={debt.id}
@@ -288,11 +290,11 @@ export const Debts = () => {
                     ))}
                 </div>
             ) : (
-                <Card>
+                <Card className="bg-white/10 backdrop-blur-md border border-white/15 rounded-[8px]">
                     <div className="text-center py-8">
-                        <h3 className="text-lg font-semibold text-white">{t('no_debts_yet')}</h3>
-                        <p className="text-gray-400 mt-2">Add loans or credit card balances to track your progress paying them off.</p>
-                        <Button onClick={() => setIsAddModalOpen(true)} className="mt-6 !w-auto px-6">
+                        <h2 className="text-[20px] font-bold text-white">{t('no_debts_yet')}</h2>
+                        <p className="text-gray-300 text-[14px] mt-2">Add loans or credit card balances to track your progress paying them off.</p>
+                        <Button onClick={() => setIsAddModalOpen(true)} variant="primary" className="mt-6 !w-auto px-6">
                             {t('add_debt')}
                         </Button>
                     </div>
