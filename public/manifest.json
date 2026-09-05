@@ -1,0 +1,40 @@
+{
+  "name": "OJIRKU - Personal Finance Manager",
+  "short_name": "OJIRKU",
+  "description": "An offline-first Personal Finance App to manage budgets, expenses, and financial goals with AI-powered insights.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1D172E",
+  "theme_color": "#1D172E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon_maskable.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "maskable"
+    }
+  ],
+   "shortcuts": [
+    {
+      "name": "Add Expense",
+      "short_name": "Expense",
+      "description": "Quickly add a new expense",
+      "url": "/?action=add-expense",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Add Income",
+      "short_name": "Income",
+      "description": "Quickly add a new income",
+      "url": "/?action=add-income",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    }
+  ]
+}

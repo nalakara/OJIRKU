@@ -1,0 +1,9 @@
+{
+  "name": "OJIRKU - Personal Finance Manager",
+  "description": "An offline-first Personal Finance App to manage budgets, expenses, and financial goals with AI-powered insights.",
+  "requestFramePermissions": [],
+  "prompt": "",
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
