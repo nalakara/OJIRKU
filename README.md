@@ -2,6 +2,8 @@
 
 > Aplikasi pencatat keuangan personal *offline-first* dwibahasa (Indonesia & Inggris) dengan proteksi PIN, pengelolaan anggaran, pelacak tujuan tabungan, manajemen utang, dan saran finansial berbasis Google Gemini AI.
 
+🌐 **Live Demo**: https://ojirku.vercel.app
+
 ---
 
 ## Overview
@@ -112,3 +114,17 @@ Aplikasi ini menggunakan model **arsitektur client-side murni**:
 1. **Sinkronisasi Web vs Android:** Repositori ini memuat kode Web (`/components`, `/lib`, `/App.tsx`) dan Android (`/app/src/main/java`). Perubahan logika bisnis di satu sisi perlu diselaraskan manual pada sisi lainnya.
 2. **Kategori Default Berdasarkan Bahasa:** Saat pertama kali database dibuat (`onPopulate` di `lib/db.ts`), daftar kategori default dibuat berdasarkan bahasa yang tersimpan di `localStorage`.
 3. **Skema Database Dexie:** Skema saat ini berada pada versi 2 (`db.version(2)`). Jika menambahkan relasi atau tabel baru, wajib menaikkan versi skema Dexie agar tidak merusak data pengguna yang sudah ada.
+
+## Cara Menjalankan
+
+```bash
+npm install
+npm run dev
+```
+
+Buka `http://localhost:5173`. Seluruh data tersimpan lokal (offline-first, proteksi PIN). Fitur saran AI memakai skema BYOK — masukkan API key Gemini milikmu di dalam aplikasi saat diminta.
+---
+
+## License
+
+MIT License © 2026 Yudhan Sebastian
